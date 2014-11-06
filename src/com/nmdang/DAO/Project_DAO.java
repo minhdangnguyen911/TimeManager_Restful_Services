@@ -137,5 +137,35 @@ public class Project_DAO {
 	        }
 			
 	}
+	
+	public static boolean UpdateProjectToUser(Project_DTO project) throws SQLException {// chưa xong , sửa lại sql
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		
+	        
+	        try{
+	            DatabaseHelper helper = new DatabaseHelper();
+	            con = helper.CreateConnection();
+	            String sql = "UPDATE Project SET ProjectName =? and ProjectDescription = ? and ProjectColor =? WHERE ProjectId = ? ";
+	            PreparedStatement sm = (PreparedStatement) con.prepareStatement(sql) ;
+	            
+	            sm.setInt(4, project.get_projectId());
+	            sm.setString(1, project.get_projectName());
+	            sm.setString(2, project.get_projectDescription());
+	            sm.setString(3, project.get_projectColor());
+	            
+	            ResultSet rs = sm.executeQuery();
+	            		
+	            
+	            con.close();
+	            return true;
+	            
+	        }catch(Exception e){
+	        	con.close();
+	        	return false;
+	        }
+			
+	}
 
 }

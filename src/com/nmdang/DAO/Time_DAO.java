@@ -12,13 +12,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Path;
+
 import com.nmdang.DBHelper.DatabaseHelper;
+import com.nmdang.DTO.Project_DTO;
 import com.nmdang.DTO.Time_DTO;
 import com.nmdang.DTO.User_DTO;
-
-
-
-
 
 
 
@@ -37,7 +36,7 @@ public class Time_DAO {
 	            String sql = "SELECT * FROM Time WHERE user = ? ";
 	            PreparedStatement sm = (PreparedStatement) con.prepareStatement(sql) ;
 	            
-	            sm.setString(1, user.get_userID());
+	            sm.setInt(1, user.get_userID());
 	            
 	            ResultSet rs = sm.executeQuery();
 	            		
@@ -130,13 +129,11 @@ public class Time_DAO {
 	        try{
 	            DatabaseHelper helper = new DatabaseHelper();
 	            con = helper.CreateConnection();
-	            String sql = "DELETE INTO Time( TimeId, TimeName, TimeStart,TimeEnd) Values(?,?,?,?)";
+	            String sql = "DELETE FROM Time WHERE TimeId =?";
 	            PreparedStatement sm = (PreparedStatement) con.prepareStatement(sql) ;
 	            
 	            sm.setInt(1, time.get_timeId());
-	            sm.setString(2, time.get_timeName());
-	            sm.setDate(3, time.get_timeStart());
-	            sm.setDate(4, time.get_timeEnd());
+	            
 	            
 	            ResultSet rs = sm.executeQuery();
 	            		
@@ -151,4 +148,33 @@ public class Time_DAO {
 			
 	}
 
+	public static boolean UpdateTimeToUser(Time_DTO time) throws SQLException {// chưa xong , sửa lại sql
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		
+	        
+	        try{
+	            DatabaseHelper helper = new DatabaseHelper();
+	            con = helper.CreateConnection();
+	            String sql = "UPDATE Time SET TimeName =? and TimeStart = ? and TimeEnd =? WHERE TimeId = ? ";
+	            PreparedStatement sm = (PreparedStatement) con.prepareStatement(sql) ;
+	            
+	            sm.setInt(4,time.get_timeId() );
+	            sm.setString(1,time.get_timeName() );
+	            sm.setDate(2,time.get_timeStart() );
+	            sm.setDate(3, time.get_timeEnd());
+	            
+	            ResultSet rs = sm.executeQuery();
+	            		
+	            
+	            con.close();
+	            return true;
+	            
+	        }catch(Exception e){
+	        	con.close();
+	        	return false;
+	        }
+			
+	}
 }

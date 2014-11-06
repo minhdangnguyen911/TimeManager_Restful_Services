@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.nmdang.DBHelper.DatabaseHelper;
 import com.nmdang.DTO.Project_DTO;
+import com.nmdang.DTO.Time_DTO;
 import com.nmdang.DTO.User_DTO;
 
 public class User_DAO {
@@ -21,7 +22,7 @@ public class User_DAO {
 	        try{
 	            DatabaseHelper helper = new DatabaseHelper();
 	            con = helper.CreateConnection();
-	            String sql = "SELECT * FROM User  WHERE 1";
+	            String sql = "SELECT * FROM user  WHERE 1";
 	            PreparedStatement sm = (PreparedStatement) con.prepareStatement(sql) ;
 	            
 	            
@@ -79,7 +80,7 @@ public class User_DAO {
 			
 	}
 
-	public static boolean DeleteTimeToUser(Project_DTO time) throws SQLException {// chưa xong , sửa lại sql
+	public static boolean DeleteUser(User_DTO user) throws SQLException {
 		// TODO Auto-generated method stub
 		
 		Connection con = null;
@@ -88,13 +89,44 @@ public class User_DAO {
 	        try{
 	            DatabaseHelper helper = new DatabaseHelper();
 	            con = helper.CreateConnection();
-	            String sql = "DELETE INTO Time( TimeId, TimeName, TimeStart,TimeEnd) Values(?,?,?,?)";
+	            String sql = "DELETE FROM User WHERE UserId = ? ";
 	            PreparedStatement sm = (PreparedStatement) con.prepareStatement(sql) ;
 	            
-	            sm.setInt(1, time.get_timeId());
-	            sm.setString(2, time.get_timeName());
-	            sm.setDate(3, time.get_timeStart());
-	            sm.setDate(4, time.get_timeEnd());
+	            sm.setInt(1, user.get_userID());
+	            
+	            
+	            
+	            ResultSet rs = sm.executeQuery();
+	            		
+	            
+	            con.close();
+	            return true;
+	            
+	        }catch(Exception e){
+	        	con.close();
+	        	return false;
+	        }
+			
+	}
+	
+	public static boolean UpdateUser(User_DTO user) throws SQLException {
+		// TODO Auto-generated method stub
+		
+		Connection con = null;
+		
+	        
+	        try{
+	            DatabaseHelper helper = new DatabaseHelper();
+	            con = helper.CreateConnection();
+	            String sql = "UPDATE Time SET UserName =? and UserPass = ? and UserFullname =? and UserPhone =? and UserMail=? WHERE TimeId = ? ";
+	            PreparedStatement sm = (PreparedStatement) con.prepareStatement(sql) ;
+	            
+	            sm.setInt(6, user.get_userID());
+	            sm.setString(1,user.get_userName() );
+	            sm.setString(2,user.get_userPass() );
+	            sm.setString(3, user.get_userFullname());
+	            sm.setString(4, user.get_userPhone());
+	            sm.setString(5, user.get_userMail());
 	            
 	            ResultSet rs = sm.executeQuery();
 	            		

@@ -17,7 +17,7 @@ public class DatabaseHelper {
             Class.forName(driverName);
 			String serverName = "localhost:3306";
 			String mydatabase = "timemanager";
-			String url = "jdbc:mysql://"+serverName+"/" +serverName;
+			String url = "jdbc:mysql://"+serverName+"/" +mydatabase;
 			String username = "root";
 			String password = "";
 			connection = DriverManager.getConnection(url, username, password);
